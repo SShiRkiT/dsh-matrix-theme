@@ -21,14 +21,14 @@ html[data-dsh-matrix] {
   --mx-line: rgba(217, 255, 226, 0.18);
   --mx-line-soft: rgba(217, 255, 226, 0.12);
   --mx-line-strong: rgba(217, 255, 226, 0.3);
-  --mx-pane: rgba(18, 18, 18, 0.55);
-  --mx-pane-lift: #0c0c0c;
+  --mx-pane: rgba(34, 34, 34, 0.55);
+  --mx-pane-lift: #141414;
   --mx-radius: 10px;
   --mx-blur: 20px;
 
   /* A neutral grain gives the frosted panes a surface on a flat black canvas.
      It is monochrome and carries no gradient. */
-  --mx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  --mx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E");
 
   /* Compact radius scale: panes 10, menus 8, controls 4–6. */
   --dsw-radius-xs: 2px;
@@ -116,17 +116,38 @@ html[data-dsh-matrix] [class$='_sidebarCol'] {
   margin: 0;
   border-right: 1px solid var(--mx-line);
   border-radius: 0;
-  background-color: var(--mx-pane);
-  background-image: var(--mx-noise);
-  background-size: 180px 180px;
+  background: transparent;
   box-shadow: none;
-  backdrop-filter: blur(var(--mx-blur)) saturate(100%);
   overflow: hidden;
 }
 
+/* Frost lives on a pseudo element: a backdrop-filter on the column itself
+ * would become the containing block of the fixed sidebar toggle and move it
+ * into the logo row (and clip it to nothing when the rail collapses). */
+html[data-dsh-matrix] [class$='_sidebarCol']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--mx-pane);
+  background-image: var(--mx-noise);
+  background-size: 180px 180px;
+  backdrop-filter: blur(var(--mx-blur)) saturate(100%);
+  pointer-events: none;
+}
+
 html[data-dsh-matrix] [class$='_sidebarCol'] > [data-slot='sidebar'] > [class*='_root'] {
+  position: relative;
+  z-index: 1;
   width: 100% !important;
   background: transparent;
+}
+
+/* The session list's bottom fade becomes a single separator line. */
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_fade'] {
+  height: 1px;
+  border-top: 1px solid var(--mx-line-soft);
+  background: none !important;
 }
 
 /* Icons carry the accent; labels stay neutral. */
@@ -182,7 +203,7 @@ html[data-dsh-matrix] [data-composer-card] {
   background-color: rgba(16, 16, 16, 0.60);
   background-image: var(--mx-noise);
   background-size: 180px 180px;
-  border: 1px solid var(--mx-line);
+  border: 1px dashed rgba(217, 255, 226, 0.28);
   border-radius: var(--mx-radius);
   box-shadow: none;
   backdrop-filter: blur(22px) saturate(100%);
@@ -195,11 +216,10 @@ html[data-dsh-matrix] [data-composer-card]:focus-within {
 }
 
 html[data-dsh-matrix] [data-composer-card][class*='cardWorkspaceTrigger']::after {
-  border-color: var(--mx-line);
-  border-radius: var(--mx-radius);
+  display: none;
 }
 
-html[data-dsh-matrix] [data-composer-card][class*='cardWorkspaceTrigger']:hover::after {
+html[data-dsh-matrix] [data-composer-card][class*='cardWorkspaceTrigger']:hover {
   border-color: rgba(198, 255, 213, 0.45);
 }
 
