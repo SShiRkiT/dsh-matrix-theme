@@ -1,0 +1,11 @@
+{
+  "id": "matrix",
+  "name": "Matrix",
+  "tagline": "Codex Matrix 暗色玻璃主题",
+  "accent": "#C6FFD5",
+  "bodyAttr": "data-dsh-matrix",
+  "package": "dsh-matrix-theme",
+  "wiring": {
+    "id": "ui-skin-matrix"
+  }
+}

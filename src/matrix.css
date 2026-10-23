@@ -1,0 +1,259 @@
+/* ============================================================================
+ * Matrix — flat near-black glass for DeepSeek Harness.
+ *
+ * Every rule is gated on `html[data-dsh-matrix]`, the marker the client half
+ * sets while the plugin is applied. Removing the marker restores the stock UI.
+ *
+ * Ground #040405 · text neutral · accent #C6FFD5 (icons + active controls) ·
+ * foreground #D9FFE2 (hairlines and layout strokes).
+ *
+ * The layout follows the Claude-style chrome: the sidebar is flush with the
+ * window edges, the Windows caption row belongs to the canvas, the session
+ * header is a flat band, and the composer is the only raised card. The only
+ * borrowed Aqua material is the frosted pane (blur + translucent fill + grain).
+ * ========================================================================== */
+
+html[data-dsh-matrix] {
+  --mx-ground: #040405;
+  --mx-ink: #ededed;
+  --mx-accent: #c6ffd5;
+  --mx-muted: #6e6e6e;
+  --mx-line: rgba(217, 255, 226, 0.18);
+  --mx-line-soft: rgba(217, 255, 226, 0.12);
+  --mx-line-strong: rgba(217, 255, 226, 0.3);
+  --mx-pane: rgba(18, 18, 18, 0.55);
+  --mx-pane-lift: #0c0c0c;
+  --mx-radius: 10px;
+  --mx-blur: 20px;
+
+  /* A neutral grain gives the frosted panes a surface on a flat black canvas.
+     It is monochrome and carries no gradient. */
+  --mx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+
+  /* Compact radius scale: panes 10, menus 8, controls 4–6. */
+  --dsw-radius-xs: 2px;
+  --dsw-radius-sm: 4px;
+  --dsw-radius-md: 6px;
+  --dsw-radius-lg: 8px;
+  --dsw-radius-xl: 10px;
+  --dsw-radius-panel: 12px;
+  --dsw-corner-shape: round;
+
+  /* Focus and syntax accents. */
+  --dsw-focus-ring-color: #c6ffd5;
+  --shiki-foreground: #ededed;
+  --shiki-background: #070707;
+  --shiki-token-constant: #c6ffd5;
+  --shiki-token-string: #b9b9b9;
+  --shiki-token-comment: #666666;
+  --shiki-token-keyword: #c6ffd5;
+  --shiki-token-parameter: #cfcfcf;
+  --shiki-token-function: #ededed;
+  --shiki-token-string-expression: #a9d8b7;
+  --shiki-token-punctuation: #8a8a8a;
+  --shiki-token-link: #c6ffd5;
+
+  background: var(--mx-ground);
+  color-scheme: dark;
+}
+
+html[data-dsh-matrix],
+html[data-dsh-matrix] body {
+  background: var(--mx-ground);
+  background-image: none;
+}
+
+/* ---------- Canvas -------------------------------------------------------
+ * The frame, conversation root and center column carry the ground. The flat
+ * fill is deliberate: no ambient wash, grid or gradient. ------------------- */
+html[data-dsh-matrix] [class$='_frame'],
+html[data-dsh-matrix] [class*='_centerCol'] {
+  background: var(--mx-ground);
+}
+
+html[data-dsh-matrix] [class*='_centerCol'] {
+  border-radius: 0;
+}
+
+html[data-dsh-matrix] [data-phase][class*='_root'],
+html[data-dsh-matrix] [data-conversation-content] {
+  background: transparent;
+}
+
+/* ---------- Windows caption row -----------------------------------------
+ * The 40px row has no fill of its own: the frame and both columns paint the
+ * ground straight through it, and the sidebar hairline continues to the top
+ * edge. The window buttons sit on that ground. ----------------------------- */
+html[data-windows-titlebar][data-dsh-matrix] [class$='_frame'] {
+  --dsh-windows-content-radius: 0px;
+  background: var(--mx-ground) !important;
+}
+
+html[data-windows-titlebar][data-dsh-matrix] [class$='_frame']::before {
+  background: transparent !important;
+}
+
+html[data-windows-titlebar][data-dsh-matrix] [class$='_sidebarCol'] {
+  box-shadow: 0 calc(-1 * var(--dsh-windows-titlebar-height)) 0 0 var(--mx-pane-lift);
+}
+
+html[data-windows-titlebar][data-dsh-matrix] [class$='_frame'] > [data-side='sidebar']::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  bottom: 100%;
+  height: var(--dsh-windows-titlebar-height);
+  border-left: 1px solid var(--mx-line);
+  pointer-events: none;
+}
+
+/* ---------- Sidebar ------------------------------------------------------
+ * Flush with the window on all sides, a single hairline on the right, and the
+ * frosted pane over the flat ground. --------------------------------------- */
+html[data-dsh-matrix] [class$='_sidebarCol'] {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  border-right: 1px solid var(--mx-line);
+  border-radius: 0;
+  background-color: var(--mx-pane);
+  background-image: var(--mx-noise);
+  background-size: 180px 180px;
+  box-shadow: none;
+  backdrop-filter: blur(var(--mx-blur)) saturate(100%);
+  overflow: hidden;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] > [data-slot='sidebar'] > [class*='_root'] {
+  width: 100% !important;
+  background: transparent;
+}
+
+/* Icons carry the accent; labels stay neutral. */
+html[data-dsh-matrix] [class$='_sidebarCol'] button svg {
+  color: var(--mx-accent);
+}
+
+html[data-dsh-matrix] button[class*='_newSession'] {
+  color: var(--mx-ink);
+  border: 1px solid var(--mx-line-soft);
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-dsh-matrix] button[class*='_newSession']:hover:not(:disabled) {
+  border-color: var(--mx-line);
+  background: rgba(217, 255, 226, 0.05);
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_logoRow'] {
+  border-bottom-color: var(--mx-line-soft);
+}
+
+/* ---------- Session header ----------------------------------------------
+ * A flat band on the canvas: no card, no blur, one hairline underneath. ---- */
+html[data-dsh-matrix] [data-phase][class*='_root'] [data-slot='conversation.header'] > header {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+html[data-dsh-matrix] [data-phase][class*='_root'] [data-slot='conversation.header'] > header:not([class*='headerBlank']) {
+  border-bottom: 1px solid var(--mx-line-soft);
+}
+
+html[data-dsh-matrix] [data-phase][class*='_root'] [data-slot='conversation.header'] > header button svg {
+  color: var(--mx-accent);
+}
+
+/* ---------- Composer -----------------------------------------------------
+ * The one raised pane: flat translucent fill, frosted grain, a foreground
+ * hairline and a compact 10px radius. The sticky seat's gradient is removed. */
+html[data-dsh-matrix] [class*='_composerSeat'] {
+  background: none !important;
+}
+
+html[data-dsh-matrix] [data-composer-card] {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(16, 16, 16, 0.60);
+  background-image: var(--mx-noise);
+  background-size: 180px 180px;
+  border: 1px solid var(--mx-line);
+  border-radius: var(--mx-radius);
+  box-shadow: none;
+  backdrop-filter: blur(22px) saturate(100%);
+  overflow: hidden;
+}
+
+html[data-dsh-matrix] [data-composer-card]:focus-within {
+  border-color: rgba(198, 255, 213, 0.55);
+  box-shadow: none;
+}
+
+html[data-dsh-matrix] [data-composer-card][class*='cardWorkspaceTrigger']::after {
+  border-color: var(--mx-line);
+  border-radius: var(--mx-radius);
+}
+
+html[data-dsh-matrix] [data-composer-card][class*='cardWorkspaceTrigger']:hover::after {
+  border-color: rgba(198, 255, 213, 0.45);
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_placeholder'] {
+  color: var(--mx-muted);
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_input'] {
+  caret-color: var(--mx-accent);
+}
+
+html[data-dsh-matrix] [data-composer-card] button svg {
+  color: var(--mx-accent);
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_add'] {
+  color: var(--mx-accent);
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_add']:hover:not(:disabled) {
+  background: rgba(217, 255, 226, 0.06);
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_primary'] {
+  color: #080808;
+  background: var(--mx-accent);
+  box-shadow: none;
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_primary']:hover:not(:disabled) {
+  background: #d9ffe2;
+}
+
+html[data-dsh-matrix] [data-composer-card] [class*='_primary'] svg {
+  color: #080808;
+}
+
+/* ---------- Overlays -----------------------------------------------------
+ * Flat menu and dialog fills with the same foreground hairline. ------------ */
+html[data-dsh-matrix] [role='menu'],
+html[data-dsh-matrix] [role='dialog'],
+html[data-dsh-matrix] [data-menu-material] {
+  border: 1px solid var(--mx-line-soft);
+  border-radius: var(--dsw-radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+html[data-dsh-matrix] ::selection {
+  color: #080808;
+  background: rgba(198, 255, 213, 0.28);
+}
+
+html[data-dsh-matrix] :focus-visible {
+  outline-color: var(--mx-accent);
+}

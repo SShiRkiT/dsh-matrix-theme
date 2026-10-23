@@ -1,0 +1,6 @@
+# Matrix theme bundle patch: adds the client row to the profile's web roster.
+# Installing this package as a bundle makes DSH load its browser half
+# (declared by `dsh.client` in package.json) on the next start.
+- insert:
+    - id: ui-skin-matrix
+      name: 'dsh-matrix-theme'

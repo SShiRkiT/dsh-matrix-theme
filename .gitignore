@@ -1,0 +1,18 @@
+# Dependencies and local development state
+node_modules/
+.dev/
+.npm-cache/
+
+# Local or generated artifacts
+*.log
+*.tgz
+*.zip
+.DS_Store
+Thumbs.db
+
+# Secrets — never commit these
+.env
+.env.*
+*.pem
+*.key
+.credentials.yaml

@@ -1,0 +1,61 @@
+{
+  "name": "dsh-matrix-theme",
+  "version": "0.1.0",
+  "description": "Matrix — a dark, glassmorphic theme for the DeepSeek Harness web UI",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "skin.json",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.1-rc.2"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "dsh-theme",
+    "theme",
+    "dark",
+    "glassmorphism",
+    "matrix"
+  ],
+  "license": "MIT",
+  "author": "SShiRkiT (https://github.com/SShiRkiT)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SShiRkiT/dsh-matrix-theme.git"
+  },
+  "homepage": "https://github.com/SShiRkiT/dsh-matrix-theme#readme",
+  "bugs": {
+    "url": "https://github.com/SShiRkiT/dsh-matrix-theme/issues"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-client-ui-theme": ">=0.2.1-rc.2"
+  }
+}
