@@ -207,7 +207,9 @@ html[data-dsh-matrix] [data-composer-card] {
   border-radius: var(--mx-radius);
   box-shadow: none;
   backdrop-filter: blur(22px) saturate(100%);
-  overflow: hidden;
+  /* The command, slash and reference menus are anchored inside the card's
+     overlay seat and open above it; the card stays unclipped. */
+  overflow: visible;
 }
 
 html[data-dsh-matrix] [data-composer-card]:focus-within {
