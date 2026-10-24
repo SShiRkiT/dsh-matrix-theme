@@ -190,6 +190,12 @@ html[data-dsh-matrix] [data-phase][class*='_root'] [data-slot='conversation.head
   color: var(--mx-accent);
 }
 
+/* New-session hero: keep the workspace row and the composer, drop the
+ * decorative brand headline (fish, title and preview badge). */
+html[data-dsh-matrix] [class*='_composerHero'] > [class*='_root']:has([class*='_headline']) {
+  display: none !important;
+}
+
 /* ---------- Composer -----------------------------------------------------
  * The one raised pane: flat translucent fill, frosted grain, a foreground
  * hairline and a compact 10px radius. The sticky seat's gradient is removed. */
