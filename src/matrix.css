@@ -199,17 +199,31 @@ html[data-dsh-matrix] [class*='_composerSeat'] {
 
 html[data-dsh-matrix] [data-composer-card] {
   position: relative;
+  isolation: isolate;
   z-index: 1;
-  background-color: rgba(16, 16, 16, 0.60);
-  background-image: var(--mx-noise);
-  background-size: 180px 180px;
+  background: transparent;
   border: 1px dashed rgba(217, 255, 226, 0.28);
   border-radius: var(--mx-radius);
   box-shadow: none;
-  backdrop-filter: blur(22px) saturate(100%);
   /* The command, slash and reference menus are anchored inside the card's
      overlay seat and open above it; the card stays unclipped. */
   overflow: visible;
+}
+
+/* Frost and grain live on a pseudo element. A backdrop-filter on the card
+ * itself would re-composite whenever the send button is hovered, making the
+ * composer and the chat below it visibly jitter. */
+html[data-dsh-matrix] [data-composer-card]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: rgba(16, 16, 16, 0.60);
+  background-image: var(--mx-noise);
+  background-size: 180px 180px;
+  backdrop-filter: blur(22px) saturate(100%);
+  pointer-events: none;
 }
 
 html[data-dsh-matrix] [data-composer-card]:focus-within {
@@ -251,6 +265,8 @@ html[data-dsh-matrix] [data-composer-card] [class*='_primary'] {
   color: #080808;
   background: var(--mx-accent);
   box-shadow: none;
+  transform: none;
+  transition: none;
 }
 
 html[data-dsh-matrix] [data-composer-card] [class*='_primary']:hover:not(:disabled) {
