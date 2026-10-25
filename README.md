@@ -1,6 +1,6 @@
 # Matrix · DSH Matrix Theme
 
-为 **DeepSeek Harness** 做的 Codex Matrix 暗色主题。布局采用 Claude-style 的现代 chrome：
+为 **DeepSeek Harness** 做的 Matrix 暗色主题。布局采用 ：
 侧栏贴边、会话标题区平直、Windows 标题栏与画布连成一体；侧栏和输入框保留一层磨砂玻璃。
 
 ![Matrix 主题预览](docs/preview.png)
@@ -17,7 +17,6 @@
 - **输入框**：10px 圆角、1px 前景色描边、磨砂颗粒与背景模糊；输入时描边转为强调色。
 - **标题栏**：Windows 的 40px caption 行沿用画布颜色，最小化、最大化和关闭按钮直接落在页面上；侧栏描边延伸到窗口顶部；会话标题区是一条平直分隔带。
 - **圆角**：侧栏与标题区为直角，输入框 10px，菜单 8px，控件 4–6px。
-- **字体**：沿用 DSH「设置 → 通用 → 外观」里的正文字体与字号。
 
 ## 安装
 
