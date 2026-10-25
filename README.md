@@ -1,11 +1,15 @@
 # Matrix · DSH Matrix Theme
 
-为 **DeepSeek Harness** 做的 Matrix 暗色主题。布局采用 ：
+为 **DeepSeek Harness** 做的 Matrix 暗色主题。布局采用现代 chrome：
 侧栏贴边、会话标题区平直、Windows 标题栏与画布连成一体；侧栏和输入框保留一层磨砂玻璃。
 
 ![Matrix 主题预览](docs/preview.png)
 
 > 预览里的窗口按钮与标题内容为示意；实际运行时由 DSH 的窗口控件和会话填充。
+
+### 账号区
+
+![品牌与账户菜单](docs/brand-dock.png)
 
 ## 设计
 

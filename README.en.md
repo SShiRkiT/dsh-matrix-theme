@@ -9,6 +9,10 @@ with the canvas. The sidebar and composer carry the frosted glass.
 > The window buttons and title content in the preview are illustrative; DSH supplies the
 > live caption controls and session text.
 
+### Account row
+
+![Brand and account menu](docs/brand-dock.png)
+
 ## Design
 
 - **Canvas:** flat `#040405`, one solid fill across the page.

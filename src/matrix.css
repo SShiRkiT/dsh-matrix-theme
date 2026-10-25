@@ -169,7 +169,97 @@ html[data-dsh-matrix] button[class*='_newSession']:hover:not(:disabled) {
 }
 
 html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_logoRow'] {
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   border-bottom-color: var(--mx-line-soft);
+  overflow: visible !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_logoRow'] button[class*='_brand'] {
+  display: none !important;
+}
+
+/* Brand + three-dot trigger in the account footer. */
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] {
+  position: relative !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [class*='_anchor'] {
+  position: static !important;
+}
+
+html[data-dsh-matrix] [data-dsh-brand-dock] {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100% - 36px);
+  height: 32px;
+  min-width: 0;
+  padding: 0 4px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+html[data-dsh-matrix] [data-dsh-brand-dock]:hover {
+  background: rgba(217, 255, 226, 0.05);
+}
+
+html[data-dsh-matrix] [data-dsh-brand-visual] {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+html[data-dsh-matrix] [data-dsh-brand-visual] svg {
+  color: var(--mx-accent);
+}
+
+html[data-dsh-matrix] [data-dsh-brand-visual] [class*='_brandIdentity'] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu'] {
+  position: absolute !important;
+  right: 0 !important;
+  top: 2px !important;
+  z-index: 2 !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  color: var(--mx-accent) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu'] > * {
+  display: none !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu']::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--mx-accent);
+  box-shadow:
+    8px 0 0 var(--mx-accent),
+    -8px 0 0 var(--mx-accent);
+}
+
+html[data-dsh-matrix] [data-sidebar-collapsed] [data-dsh-brand-dock],
+html[data-dsh-matrix] [data-sidebar-collapsed] [class$='_sidebarCol'] button[aria-label='Account menu'] {
+  display: none !important;
 }
 
 /* ---------- Session header ----------------------------------------------

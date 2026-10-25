@@ -198,6 +198,68 @@ function pinDark(ctx) {
   return ctx.on('theme/change', pin);
 }
 
+/**
+ * Move the sidebar brand into the account footer: the original logo row is
+ * hidden, and a dock holding a visual copy of the brand sits in the account
+ * trigger row. The dock opens the existing account menu, and the account
+ * button itself is restyled into the three-dot trigger at the row's far edge.
+ * @returns disposer for the observer and dock.
+ */
+function mountBrandDock() {
+  let dock;
+  let scheduled = false;
+  let observer;
+
+  const accountButton = () => document.querySelector('[class$="_sidebarCol"] button[aria-label="Account menu"]');
+
+  const buildDock = (row, brand) => {
+    const next = document.createElement('div');
+    next.dataset.dshBrandDock = '';
+    const visual = document.createElement('span');
+    visual.dataset.dshBrandVisual = '';
+    const identity = brand.querySelector('[class*="_brandIdentity"]');
+    if (identity !== null) visual.append(identity.cloneNode(true));
+    next.append(visual);
+    next.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      accountButton()?.click();
+    });
+    row.insertBefore(next, row.firstChild);
+    return next;
+  };
+
+  const ensure = () => {
+    const sidebar = document.querySelector('[class$="_sidebarCol"]');
+    if (sidebar === null) return;
+    const account = sidebar.querySelector('button[aria-label="Account menu"]');
+    const brand = sidebar.querySelector('button[class*="_brand"]');
+    if (account === null || brand === null) return;
+    const row = account.closest('[class*="_triggerRow"]') ?? account.parentElement;
+    if (row === null) return;
+    if (dock !== undefined && dock.isConnected && dock.parentElement === row) return;
+    dock?.remove();
+    dock = buildDock(row, brand);
+  };
+
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      ensure();
+    });
+  };
+
+  schedule();
+  observer = new MutationObserver(schedule);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  return () => {
+    observer?.disconnect();
+    dock?.remove();
+  };
+}
+
 /** Required client services. */
 const inject = ['theme'];
 
@@ -225,8 +287,10 @@ function apply(ctx) {
     }
 
     const offTheme = pinDark(ctx);
+    const offDock = mountBrandDock();
 
     return () => {
+      offDock();
       offTheme();
       disposeTokens();
       style.remove();
