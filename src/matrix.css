@@ -223,6 +223,19 @@ html[data-dsh-matrix] [data-dsh-brand-dock]:hover {
   background: rgba(217, 255, 226, 0.05);
 }
 
+/* Restore the boundary above the account area: one hairline spanning the
+ * sidebar, so content from other footer plugins stops above the brand row. */
+html[data-dsh-matrix] [data-dsh-brand-dock]::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  top: -6px;
+  height: 1px;
+  background: var(--mx-line-soft);
+  pointer-events: none;
+}
+
 html[data-dsh-matrix] [data-dsh-brand-visual] {
   display: flex;
   align-items: center;
