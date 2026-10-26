@@ -1,6 +1,6 @@
 {
   "name": "dsh-matrix-theme",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Matrix — a dark, glassmorphic theme for the DeepSeek Harness web UI",
   "type": "module",
   "main": "lib/index.js",

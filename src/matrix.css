@@ -186,6 +186,7 @@ html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_logoRow'] button[class*='
  * the account launcher cannot cover it. */
 html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] {
   position: relative !important;
+  min-height: 44px !important;
 }
 
 html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [class*='_anchor'],
@@ -205,35 +206,25 @@ html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] button[aria-
 
 html[data-dsh-matrix] [data-dsh-brand-dock] {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 8px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 30;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 32px;
+  height: 44px;
   min-width: 0;
-  padding: 0 4px;
-  border-radius: 6px;
+  padding: 0 14px;
+  border-top: 1px solid var(--mx-line-soft);
+  background-color: #1d1d1e;
+  background-image: var(--mx-noise);
+  background-size: 180px;
   cursor: pointer;
 }
 
 html[data-dsh-matrix] [data-dsh-brand-dock]:hover {
-  background: rgba(217, 255, 226, 0.05);
-}
-
-/* Restore the boundary above the account area: one hairline spanning the
- * sidebar, so content from other footer plugins stops above the brand row. */
-html[data-dsh-matrix] [data-dsh-brand-dock]::before {
-  content: '';
-  position: absolute;
-  left: -10px;
-  right: -10px;
-  top: -6px;
-  height: 1px;
-  background: var(--mx-line-soft);
-  pointer-events: none;
+  background-color: #252526;
 }
 
 html[data-dsh-matrix] [data-dsh-brand-visual] {
@@ -266,7 +257,13 @@ html[data-dsh-matrix] [data-dsh-account-dots] {
   background: transparent;
   border: 0;
   border-radius: 0;
+  outline: none;
   cursor: pointer;
+}
+
+html[data-dsh-matrix] [data-dsh-account-dots]:focus,
+html[data-dsh-matrix] [data-dsh-account-dots]:focus-visible {
+  outline: none;
 }
 
 html[data-dsh-matrix] [data-dsh-account-dots]::before {
