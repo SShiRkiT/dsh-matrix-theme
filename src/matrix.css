@@ -181,20 +181,37 @@ html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_logoRow'] button[class*='
   display: none !important;
 }
 
-/* Brand + three-dot trigger in the account footer. */
+/* Brand + three-dot trigger in the account footer. The dock lives on the
+ * sidebar column rather than the account row, so signing in and re-rendering
+ * the account launcher cannot cover it. */
 html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] {
   position: relative !important;
 }
 
-html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [class*='_anchor'] {
-  position: static !important;
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [class*='_anchor'],
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] > button {
+  visibility: hidden !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] button[aria-haspopup='menu'] {
+  position: absolute !important;
+  right: 0 !important;
+  top: 2px !important;
+  width: 28px !important;
+  height: 28px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 html[data-dsh-matrix] [data-dsh-brand-dock] {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 8px;
+  z-index: 30;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  width: calc(100% - 36px);
+  justify-content: space-between;
   height: 32px;
   min-width: 0;
   padding: 0 4px;
@@ -225,28 +242,21 @@ html[data-dsh-matrix] [data-dsh-brand-visual] [class*='_brandIdentity'] {
   min-width: 0;
 }
 
-html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu'] {
-  position: absolute !important;
-  right: 0 !important;
-  top: 2px !important;
-  z-index: 2 !important;
-  width: 28px !important;
-  height: 28px !important;
-  padding: 0 !important;
-  display: grid !important;
-  place-items: center !important;
-  color: var(--mx-accent) !important;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+html[data-dsh-matrix] [data-dsh-account-dots] {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: var(--mx-accent);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
 }
 
-html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu'] > * {
-  display: none !important;
-}
-
-html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu']::before {
+html[data-dsh-matrix] [data-dsh-account-dots]::before {
   content: '';
   width: 4px;
   height: 4px;
@@ -257,8 +267,7 @@ html[data-dsh-matrix] [class$='_sidebarCol'] button[aria-label='Account menu']::
     -8px 0 0 var(--mx-accent);
 }
 
-html[data-dsh-matrix] [data-sidebar-collapsed] [data-dsh-brand-dock],
-html[data-dsh-matrix] [data-sidebar-collapsed] [class$='_sidebarCol'] button[aria-label='Account menu'] {
+html[data-dsh-matrix] [data-sidebar-collapsed] [data-dsh-brand-dock] {
   display: none !important;
 }
 

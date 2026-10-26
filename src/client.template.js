@@ -200,9 +200,9 @@ function pinDark(ctx) {
 
 /**
  * Move the sidebar brand into the account footer: the original logo row is
- * hidden, and a dock holding a visual copy of the brand sits in the account
- * trigger row. The dock opens the existing account menu, and the account
- * button itself is restyled into the three-dot trigger at the row's far edge.
+ * hidden, and a dock holding a visual copy of the brand sits on the sidebar
+ * column, above the account row. The dock opens the existing account menu;
+ * the three-dot button lives in the dock so signing in cannot cover it.
  * @returns disposer for the observer and dock.
  */
 function mountBrandDock() {
@@ -210,36 +210,41 @@ function mountBrandDock() {
   let scheduled = false;
   let observer;
 
-  const accountButton = () => document.querySelector('[class$="_sidebarCol"] button[aria-label="Account menu"]');
+  const accountButton = () => document.querySelector('[class$="_sidebarCol"] [class*="_triggerRow"] button[aria-haspopup="menu"]')
+    ?? document.querySelector('[class$="_sidebarCol"] [class*="_triggerRow"] [class*="_avatar"]')?.closest('button')
+    ?? document.querySelector('[class$="_sidebarCol"] button[aria-label="Account menu"]');
 
-  const buildDock = (row, brand) => {
+  const buildDock = (sidebar, brand) => {
     const next = document.createElement('div');
     next.dataset.dshBrandDock = '';
     const visual = document.createElement('span');
     visual.dataset.dshBrandVisual = '';
     const identity = brand.querySelector('[class*="_brandIdentity"]');
     if (identity !== null) visual.append(identity.cloneNode(true));
-    next.append(visual);
+    const dots = document.createElement('button');
+    dots.type = 'button';
+    dots.dataset.dshAccountDots = '';
+    dots.setAttribute('aria-label', 'Account menu');
+    dots.setAttribute('aria-haspopup', 'menu');
+    next.append(visual, dots);
     next.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
       accountButton()?.click();
     });
-    row.insertBefore(next, row.firstChild);
+    sidebar.append(next);
     return next;
   };
 
   const ensure = () => {
     const sidebar = document.querySelector('[class$="_sidebarCol"]');
     if (sidebar === null) return;
-    const account = sidebar.querySelector('button[aria-label="Account menu"]');
+    const account = accountButton();
     const brand = sidebar.querySelector('button[class*="_brand"]');
     if (account === null || brand === null) return;
-    const row = account.closest('[class*="_triggerRow"]') ?? account.parentElement;
-    if (row === null) return;
-    if (dock !== undefined && dock.isConnected && dock.parentElement === row) return;
+    if (dock !== undefined && dock.isConnected && dock.parentElement === sidebar) return;
     dock?.remove();
-    dock = buildDock(row, brand);
+    dock = buildDock(sidebar, brand);
   };
 
   const schedule = () => {
