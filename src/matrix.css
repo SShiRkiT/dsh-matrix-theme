@@ -143,10 +143,18 @@ html[data-dsh-matrix] [class$='_sidebarCol'] > [data-slot='sidebar'] > [class*='
   background: transparent;
 }
 
-/* The session list's bottom fade becomes a single separator line. */
-html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_fade'] {
-  height: 1px;
-  border-top: 1px solid var(--mx-line-soft);
+/* Remove the session list's bottom scroll fade so the dock hairline stays single. */
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_fade'],
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_scrollFade'] {
+  display: none !important;
+  background: none !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_fade']::before,
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_fade']::after,
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_scrollFade']::before,
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_scrollFade']::after {
+  content: none !important;
   background: none !important;
 }
 
@@ -183,25 +191,50 @@ html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_logoRow'] button[class*='
 
 /* Brand + three-dot trigger in the account footer. The dock lives on the
  * sidebar column rather than the account row, so signing in and re-rendering
- * the account launcher cannot cover it. */
+ * the account launcher cannot cover it. Keep the menu anchor visible so CSS
+ * anchor positioning renders the portaled menu, while hiding only the original
+ * launcher button and keeping update indicators clickable above the dock. */
 html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] {
   position: relative !important;
   min-height: 44px !important;
 }
 
-html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [class*='_anchor'],
-html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] > button {
-  visibility: hidden !important;
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow']:has(button[class*='_indicator']) {
+  min-height: 0 !important;
+  padding: 4px 6px 42px !important;
 }
 
-html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] button[aria-haspopup='menu'] {
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [data-slot='settings.launcher'] > * {
   position: absolute !important;
+  left: 0 !important;
   right: 0 !important;
-  top: 2px !important;
-  width: 28px !important;
-  height: 28px !important;
+  bottom: -10px !important;
+  height: 44px !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [class*='_anchor'] {
+  visibility: visible !important;
+  display: block !important;
+  height: 44px !important;
+  pointer-events: none !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] > button:not([class*='_indicator']),
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] [data-slot='settings.launcher'] button,
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] button[aria-haspopup='menu'],
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] button[aria-haspopup='dialog'] {
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+html[data-dsh-matrix] [class$='_sidebarCol'] [class*='_triggerRow'] button[class*='_indicator'] {
+  position: relative !important;
+  z-index: 35 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 html[data-dsh-matrix] [data-dsh-brand-dock] {

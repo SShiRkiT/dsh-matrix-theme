@@ -210,9 +210,40 @@ function mountBrandDock() {
   let scheduled = false;
   let observer;
 
-  const accountButton = () => document.querySelector('[class$="_sidebarCol"] [class*="_triggerRow"] button[aria-haspopup="menu"]')
-    ?? document.querySelector('[class$="_sidebarCol"] [class*="_triggerRow"] [class*="_avatar"]')?.closest('button')
-    ?? document.querySelector('[class$="_sidebarCol"] button[aria-label="Account menu"]');
+  const launcherButtons = () => {
+    const row = document.querySelector('[class$="_sidebarCol"] [class*="_triggerRow"]');
+    if (row === null) return [];
+    const candidates = [
+      ...row.querySelectorAll('[data-slot="settings.launcher"] button'),
+      ...row.querySelectorAll('button[aria-haspopup="menu"]'),
+      ...row.querySelectorAll('button[aria-haspopup="dialog"]'),
+      ...[...row.querySelectorAll('[class*="_avatar"]')].map((el) => el.closest('button')),
+      row.querySelector('button[aria-label="Account menu"]'),
+      ...[...row.querySelectorAll('button')].filter((btn) => !/indicator/i.test(btn.className)),
+    ];
+    return [...new Set(candidates.filter((el) => el instanceof HTMLButtonElement && !el.disabled))];
+  };
+
+  const accountButton = () => launcherButtons()[0] ?? null;
+
+  const triggerLauncher = () => {
+    const buttons = launcherButtons();
+    if (buttons.length === 0) return;
+    const beforeMenu = document.querySelector('[role="menu"]');
+    const beforeDialog = document.querySelector('[role="dialog"]');
+    const tryIndex = (index) => {
+      if (index >= buttons.length) return;
+      buttons[index].click();
+      if (index + 1 >= buttons.length) return;
+      requestAnimationFrame(() => {
+        const opened = document.querySelector('[role="menu"]') !== beforeMenu
+          || document.querySelector('[role="dialog"]') !== beforeDialog
+          || buttons[index].getAttribute('aria-expanded') === 'true';
+        if (!opened) tryIndex(index + 1);
+      });
+    };
+    tryIndex(0);
+  };
 
   const buildDock = (sidebar, brand) => {
     const next = document.createElement('div');
@@ -230,7 +261,7 @@ function mountBrandDock() {
     next.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      accountButton()?.click();
+      triggerLauncher();
     });
     sidebar.append(next);
     return next;
@@ -240,7 +271,8 @@ function mountBrandDock() {
     const sidebar = document.querySelector('[class$="_sidebarCol"]');
     if (sidebar === null) return;
     const account = accountButton();
-    const brand = sidebar.querySelector('button[class*="_brand"]');
+    const brand = sidebar.querySelector('button[class*="_brand"]')
+      ?? sidebar.querySelector('[class*="_logoRow"] > [class*="_brand"]');
     if (account === null || brand === null) return;
     if (dock !== undefined && dock.isConnected && dock.parentElement === sidebar) return;
     dock?.remove();
